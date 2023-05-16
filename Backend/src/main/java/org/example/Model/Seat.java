@@ -1,4 +1,5 @@
 package org.example.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,14 +18,17 @@ public class Seat{
     @Column(nullable = false)
     private double price;
 
+    @JsonIgnore
     @JoinColumn(name = "seat_type_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private SeatType seatType;
 
+    @JsonIgnore
     @JoinColumn(name = "cinema_hall_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private CinemaHall cinemaHall;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     private List<ReservedSeats> reservedSeats = new ArrayList<>();
 

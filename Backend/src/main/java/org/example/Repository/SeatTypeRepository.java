@@ -1,4 +1,4 @@
-package Repository;
+package org.example.Repository;
 
 import org.example.Model.Cinema;
 import org.example.Model.SeatType;

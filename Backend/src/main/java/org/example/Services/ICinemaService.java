@@ -1,4 +1,4 @@
-package Services;
+package org.example.Services;
 
 import org.example.Model.Cinema;
 

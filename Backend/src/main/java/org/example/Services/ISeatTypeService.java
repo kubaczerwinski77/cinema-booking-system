@@ -1,4 +1,4 @@
-package Services;
+package org.example.Services;
 
 import org.example.Model.SeatType;
 
@@ -9,6 +9,5 @@ public interface ISeatTypeService {
 
     SeatType getSeatType(int id);
     SeatType addSeatType(String type);
-    SeatType updateSeatType(int id, String type);
     boolean deleteSeatType(int id);
 }

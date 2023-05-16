@@ -1,13 +1,15 @@
 package org.example.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import org.springframework.http.HttpStatusCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Cinema {
+public class Cinema{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,6 +23,7 @@ public class Cinema {
     @Column(nullable = false)
     private String city;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cinema_id")
     private List<CinemaHall> cinemaHalls = new ArrayList<>();

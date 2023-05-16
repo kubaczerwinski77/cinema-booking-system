@@ -1,5 +1,6 @@
 package org.example.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ public class Booking {
     private String name;
     private String lastName;
 
-   @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL)
     private List<ReservedSeats> reservedSeats = new ArrayList<>();
 
     public Booking(String email, String name, String lastName)

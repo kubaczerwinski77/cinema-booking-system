@@ -1,4 +1,4 @@
-package Services;
+package org.example.Services;
 
 import org.example.Model.CinemaHall;
 
@@ -8,7 +8,7 @@ public interface ICinemaHallService {
     public List<CinemaHall> getCinemaHalls();
 
     CinemaHall getCinemaHall(long id);
-    CinemaHall addCinemaHall(String name, int totalSize, int length, int width, long cinemaId);
-    CinemaHall updateCinemaHall(long id,String name, int totalSize, int length, int width );
+    CinemaHall addCinemaHall(String name, int totalSize,  long cinemaId);
+    CinemaHall updateCinemaHall(long id,String name, int totalSize);
     boolean deleteCinemaHall(long id);
 }

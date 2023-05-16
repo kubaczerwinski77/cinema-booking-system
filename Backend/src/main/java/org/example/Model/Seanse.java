@@ -1,5 +1,6 @@
 package org.example.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -15,17 +16,19 @@ public class Seanse {
 
     @Column(nullable = false)
     private LocalDateTime seanseDate;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cinema_hall_id", nullable = false)
+
+    @JsonIgnore
+    @JoinColumn(name = "cinema_hall_id")
+    @ManyToOne
     private CinemaHall cinemaHall;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     private List<ReservedSeats> reservedSeats = new ArrayList<>();
 
-    public Seanse(LocalDateTime seanseDate, CinemaHall cinemaHall)
+    public Seanse(LocalDateTime seanseDate)
     {
         this.seanseDate = seanseDate;
-        this.cinemaHall = cinemaHall;
     }
 
     public Seanse() {

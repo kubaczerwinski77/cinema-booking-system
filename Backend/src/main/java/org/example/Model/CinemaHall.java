@@ -1,5 +1,7 @@
 package org.example.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,30 +19,26 @@ public class CinemaHall {
     @Column(nullable = false)
     private int totalSize;
 
-    @Column(nullable = false)
-    private int length;
-
-    @Column(nullable = false)
-    private int width;
-
+    @JsonIgnore
     @JoinColumn(name = "cinema_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Cinema cinema;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cinema_hall_id")
     private List<Seat> seats = new ArrayList<>();
 
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cinema_hall_id")
-    @OneToMany
     private List<Seanse> seanse;
 
-    public CinemaHall(String name, int totalSize, int length, int width)
+    public CinemaHall(String name, int totalSize)
     {
         this.name = name;
         this.totalSize = totalSize;
-        this.length = length;
-        this.width = width;
     }
 
     public CinemaHall() {}
@@ -67,22 +65,6 @@ public class CinemaHall {
 
     public void setTotalSize(int totalSize) {
         this.totalSize = totalSize;
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
     }
 
     public Cinema getCinema() {

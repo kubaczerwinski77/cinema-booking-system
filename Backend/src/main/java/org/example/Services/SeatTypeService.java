@@ -1,36 +1,35 @@
-package Services;
+package org.example.Services;
 
-import Repository.CinemaRepository;
-import Repository.SeatTypeRepository;
+import org.example.Repository.CinemaRepository;
+import org.example.Repository.SeatRepository;
+import org.example.Repository.SeatTypeRepository;
 import org.example.Model.Cinema;
 import org.example.Model.Seat;
 import org.example.Model.SeatType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.example.Services.ISeatTypeService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class SeatTypeService implements ISeatTypeService{
+@Service
+public class SeatTypeService implements ISeatTypeService {
 
-    @Autowired
     private SeatTypeRepository seatTypeRepository;
+    private final SeatRepository seatRepository;
 
-    public SeatTypeService(SeatTypeRepository seatTypeRepository) {this.seatTypeRepository = seatTypeRepository;}
+    public SeatTypeService(SeatTypeRepository seatTypeRepository,
+                           SeatRepository seatRepository) {this.seatTypeRepository = seatTypeRepository;
+        this.seatRepository = seatRepository;
+    }
 
     public List<SeatType> getSeatTypes() {return seatTypeRepository.findAll();}
 
     public SeatType getSeatType(int id) {return seatTypeRepository.findById(id).get();}
 
-    public SeatType updateSeatType(int id, String type){
-        if (seatTypeRepository.existsById(id) && type != null) {
-            SeatType seatType = seatTypeRepository.findById(id).get();
-            seatType.setType(type);
-            seatTypeRepository.saveAndFlush(seatType);
-            return seatType;
-        } else {return null;}
-    }
-
     public SeatType addSeatType(String type) {
         SeatType seatType= new SeatType(type);
+        seatTypeRepository.saveAndFlush(seatType);
         return seatType;
     }
 

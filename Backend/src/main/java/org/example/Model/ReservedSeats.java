@@ -1,5 +1,7 @@
 package org.example.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -10,15 +12,22 @@ public class ReservedSeats {
 
     @EmbeddedId
     ReservedSeatsKey id;
+
+    @JsonIgnore
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "seanse_id", insertable=false, updatable=false)
     private Seanse seanse;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "booking_id", insertable=false, updatable=false)
     private Booking booking;
 
+
+    @JsonIgnore
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "seat_id", insertable=false, updatable=false)
     private Seat seat;
 

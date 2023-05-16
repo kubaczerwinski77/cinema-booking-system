@@ -1,5 +1,6 @@
 package org.example.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class SeatType {
     @Column(nullable = false)
     String type;
 
+    @JsonIgnore
     @OneToMany()
     @JoinColumn(name = "seat_type_id")
     private List<Seat> seats = new ArrayList<>();

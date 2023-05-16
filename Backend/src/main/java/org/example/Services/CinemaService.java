@@ -1,18 +1,19 @@
-package Services;
+package org.example.Services;
 
-import Repository.CinemaHallRepository;
-import Repository.CinemaRepository;
+import org.example.Repository.CinemaHallRepository;
+import org.example.Repository.CinemaRepository;
 import org.example.Model.Cinema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
+import org.example.Services.ICinemaService;
 
 import java.util.List;
 
 @Service
 public class CinemaService implements ICinemaService{
 
-    @Autowired
+
     private CinemaRepository cinemaRepository;
 
     public CinemaService(CinemaRepository cinemaRepository) {this.cinemaRepository = cinemaRepository;}
