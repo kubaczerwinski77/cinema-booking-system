@@ -3,6 +3,7 @@ package org.example.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,15 +18,18 @@ public class Booking {
     private String name;
     private String lastName;
 
-    @JsonIgnore
+    private LocalDateTime date;
+
+  //  @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
     private List<ReservedSeats> reservedSeats = new ArrayList<>();
 
-    public Booking(String email, String name, String lastName)
+    public Booking(String email, String name, String lastName, LocalDateTime date)
     {
         this.email = email;
         this.name = name;
         this.lastName = lastName;
+        this.date = date;
     }
 
 
@@ -63,6 +67,14 @@ public class Booking {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
     }
 
     public List<ReservedSeats> getReservedSeats() {

@@ -2,32 +2,27 @@ package org.example.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+
 
 @Entity
-public class ReservedSeats {
+@IdClass(ReservedSeats.class)
+public class ReservedSeats implements Serializable {
 
-    @EmbeddedId
-    ReservedSeatsKey id;
-
-    @JsonIgnore
+    @Id
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "seanse_id", insertable=false, updatable=false)
     private Seanse seanse;
 
-    @JsonIgnore
+    @Id
     @ManyToOne
     @JoinColumn(name = "booking_id", insertable=false, updatable=false)
     private Booking booking;
 
-
-    @JsonIgnore
+    @Id
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "seat_id", insertable=false, updatable=false)
     private Seat seat;
 
@@ -46,11 +41,27 @@ public class ReservedSeats {
         return booking;
     }
 
+ /*   public Seanse getSeanse() {
+        return seanse;
+    }*/
+
+    public Seat getSeat() {
+        return seat;
+    }
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
+
+    public void setSeanse(Seanse seanse) {
+        this.seanse = seanse;
+    }
+
     public Seanse getSeanse() {
         return seanse;
     }
 
-    public Seat getSeat() {
-        return seat;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 }

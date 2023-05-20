@@ -25,12 +25,12 @@ public class CinemaHallController {
         return new ResponseEntity<>(cinemaHallService.getCinemaHalls(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/cinemaHall/{id}")
+    @GetMapping(value = "/cinemaHalls/{id}")
     public ResponseEntity<CinemaHall> getCinemaHallById(@PathVariable("id") long id){
         return new ResponseEntity<>(cinemaHallService.getCinemaHall(id), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/cinemaHall")
+    @PostMapping(value = "/cinemaHalls")
     public ResponseEntity<CinemaHall> addCinemaHall(@RequestBody ObjectNode json){
         if (
                 !json.has("name") ||
@@ -50,7 +50,7 @@ public class CinemaHallController {
         }
     }
 
-    @PutMapping(value = "/cinemaHall/{id}")
+    @PutMapping(value = "/cinemaHalls/{id}")
     public ResponseEntity<CinemaHall> updateCinemaHall(@PathVariable Long id, @RequestBody ObjectNode json){
         if (
                 !json.has("name") ||
@@ -70,7 +70,7 @@ public class CinemaHallController {
     }
 
 
-    @DeleteMapping(value = "/rooms/{id}")
+    @DeleteMapping(value = "/cinemaHalls/{id}")
     public ResponseEntity<CinemaHall> deleteRoom(@PathVariable("id") Long id){
         try{
             cinemaHallService.deleteCinemaHall(id);

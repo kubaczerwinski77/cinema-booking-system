@@ -18,19 +18,19 @@ public class Seat{
     @Column(nullable = false)
     private double price;
 
-    @JsonIgnore
+ //   @JsonIgnore
     @JoinColumn(name = "seat_type_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private SeatType seatType;
 
-    @JsonIgnore
+  //  @JsonIgnore
     @JoinColumn(name = "cinema_hall_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private CinemaHall cinemaHall;
 
-    @JsonIgnore
+   /* @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL)
-    private List<ReservedSeats> reservedSeats = new ArrayList<>();
+    private List<ReservedSeats> reservedSeats = new ArrayList<>();*/
 
 
     public Seat() {
@@ -90,7 +90,7 @@ public class Seat{
 
 
 
-    public List<ReservedSeats> getReservedSeats() {
+   /* public List<ReservedSeats> getReservedSeats() {
         return reservedSeats;
-    }
+    }*/
 }

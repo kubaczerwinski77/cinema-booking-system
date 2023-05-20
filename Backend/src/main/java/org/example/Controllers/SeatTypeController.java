@@ -25,12 +25,12 @@ public class SeatTypeController {
         return new ResponseEntity<>(seatTypeService.getSeatTypes(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/seatType/{id}")
+    @GetMapping(value = "/seatTypes/{id}")
     public ResponseEntity<SeatType> getSeatTypeById(@PathVariable("id") int id){
         return new ResponseEntity<>(seatTypeService.getSeatType(id), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/seatType")
+    @PostMapping(value = "/seatTypes")
     public ResponseEntity<SeatType> addSeatType(@RequestBody ObjectNode json){
         if (!json.has("type"))
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -38,7 +38,7 @@ public class SeatTypeController {
 
     }
 
-    @DeleteMapping(value = "/seatType/{id}")
+    @DeleteMapping(value = "/seatTypes/{id}")
     public ResponseEntity<SeatType> deleteSeatType(@PathVariable("id") int id){
         try{
             seatTypeService.deleteSeatType(id);

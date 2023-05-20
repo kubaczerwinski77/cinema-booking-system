@@ -23,7 +23,7 @@ public class Cinema{
     @Column(nullable = false)
     private String city;
 
-    @JsonIgnore
+ //   @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cinema_id")
     private List<CinemaHall> cinemaHalls = new ArrayList<>();

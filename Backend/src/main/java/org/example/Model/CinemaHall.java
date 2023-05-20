@@ -2,11 +2,14 @@ package org.example.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Entity
 public class CinemaHall {
     @Id
@@ -24,16 +27,16 @@ public class CinemaHall {
     @ManyToOne(fetch = FetchType.LAZY)
     private Cinema cinema;
 
-    @JsonIgnore
+  //  @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cinema_hall_id")
     private List<Seat> seats = new ArrayList<>();
 
 
-    @JsonIgnore
+   /* @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cinema_hall_id")
-    private List<Seanse> seanse;
+    private List<Seanse> seanse;*/
 
     public CinemaHall(String name, int totalSize)
     {
@@ -75,11 +78,11 @@ public class CinemaHall {
         this.cinema = cinemaId;
     }
 
-    public List<Seanse> getSeanse() {
+ /*   public List<Seanse> getSeanse() {
         return seanse;
     }
 
     public List<Seat> getSeats() {
         return seats;
-    }
+    }*/
 }

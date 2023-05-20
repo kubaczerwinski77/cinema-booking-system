@@ -27,12 +27,12 @@ public class CinemaController {
         return new ResponseEntity<>(cinemaService.getCinemas(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/cinema/{id}")
+    @GetMapping(value = "/cinemas/{id}")
     public ResponseEntity<Cinema> getCinemaById(@PathVariable("id") long id){
         return new ResponseEntity<>(cinemaService.getCinema(id), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/cinema")
+    @PostMapping(value = "/cinemas")
     public ResponseEntity<Cinema> addCinema(@RequestBody ObjectNode json){
         if (!json.has("name") || !json.has("city") || !json.has("address"))
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -40,7 +40,7 @@ public class CinemaController {
 
     }
 
-    @PutMapping(value = "/cinema/{id}")
+    @PutMapping(value = "/cinemas/{id}")
     public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, @RequestBody ObjectNode json){
         if (!json.has("name") || !json.has("city"))
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -53,7 +53,7 @@ public class CinemaController {
     }
 
 
-    @DeleteMapping(value = "/cinema/{id}")
+    @DeleteMapping(value = "/cinemas/{id}")
     public ResponseEntity<Cinema> deleteCinema(@PathVariable("id") Long id){
         if(cinemaHallService.hallsInCinema(id)) return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         try{

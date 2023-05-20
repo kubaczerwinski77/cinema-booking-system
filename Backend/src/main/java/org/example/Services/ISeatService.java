@@ -6,10 +6,9 @@ import org.example.Model.SeatType;
 import java.util.List;
 
 public interface ISeatService {
-    public List<Seat> getSeat();
+    public List<Seat> getSeats(Long id);
 
-    Seat getSeat(int id);
-    Seat addSeat(String type);
-    Seat updateSeat(int id, String type);
-    boolean deleteSeat(int id);
+    Seat getSeat(Long id);
+    Seat updateSeat(Long id, int seatTypeId);
+
 }

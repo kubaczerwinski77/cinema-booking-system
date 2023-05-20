@@ -1,5 +1,6 @@
 package org.example.Model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -17,7 +18,11 @@ public class Seanse {
     @Column(nullable = false)
     private LocalDateTime seanseDate;
 
+    @Column(nullable = false)
+    private long movieId;
+
     @JsonIgnore
+    @JsonBackReference
     @JoinColumn(name = "cinema_hall_id")
     @ManyToOne
     private CinemaHall cinemaHall;
@@ -26,9 +31,11 @@ public class Seanse {
     @OneToMany(cascade = CascadeType.ALL)
     private List<ReservedSeats> reservedSeats = new ArrayList<>();
 
-    public Seanse(LocalDateTime seanseDate)
+    public Seanse(LocalDateTime seanseDate, Long movieId, CinemaHall cinemaHall)
     {
         this.seanseDate = seanseDate;
+        this.movieId = movieId;
+        this.cinemaHall = cinemaHall;
     }
 
     public Seanse() {
@@ -48,6 +55,14 @@ public class Seanse {
 
     public void setDate(LocalDateTime date) {
         this.seanseDate = date;
+    }
+
+    public long getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(long movieId) {
+        this.movieId = movieId;
     }
 
     public CinemaHall getCinemaHall() {
