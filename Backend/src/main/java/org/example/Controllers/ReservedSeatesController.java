@@ -2,6 +2,7 @@ package org.example.Controllers;
 
 import org.example.Model.ReservedSeats;
 import org.example.Model.Seanse;
+import org.example.Model.Seat;
 import org.example.Services.CinemaHallService;
 import org.example.Services.CinemaService;
 import org.example.Services.ReservedSeatsService;
@@ -33,7 +34,7 @@ public class ReservedSeatesController {
     }
 
     @GetMapping(value = "/reservedSeates/{id}")
-    public ResponseEntity<List<ReservedSeats>> getAllReservedSeatesInSeanse(long id) {
+    public ResponseEntity<List<Seat>> getAllReservedSeatesInSeanse(long id) {
             return new ResponseEntity<>(reservedSeatsService.getReservedSeatInSeanse(id), HttpStatus.OK);
 
     }
