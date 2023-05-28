@@ -37,17 +37,17 @@ public class CinemaHallController {
                         !json.has("totalSize") ||
                         !json.has("cinemaId")
         )
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("Wrong values");
 
-        try {
+       // try {
             return new ResponseEntity<>( cinemaHallService.addCinemaHall(
                     json.get("name").asText(),
                     json.get("totalSize").asInt(),
                     json.get("cinemaId").asLong()),
                     HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+     //   } catch (NotFoundException e) {
+      //      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+     //   }
     }
 
     @PutMapping(value = "/cinemaHalls/{id}")
@@ -56,27 +56,24 @@ public class CinemaHallController {
                 !json.has("name") ||
                         !json.has("totalSize")
         )
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        try {
+            throw new IllegalArgumentException("Wrong values");
+      //  try {
             CinemaHall cinemaHall = cinemaHallService.updateCinemaHall(
                     id,
                     json.get("name").asText(),
                     json.get("totalSize").asInt()
             );
             return new ResponseEntity<>(cinemaHall, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    //    } catch (NotFoundException e) {
+    //        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+     //   }
     }
 
 
     @DeleteMapping(value = "/cinemaHalls/{id}")
     public ResponseEntity<CinemaHall> deleteRoom(@PathVariable("id") Long id){
-        try{
             cinemaHallService.deleteCinemaHall(id);
             return new ResponseEntity<>(null,HttpStatus.OK);
-        } catch (NotFoundException e){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        }
+
     }
 }

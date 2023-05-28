@@ -11,6 +11,7 @@ import org.example.Services.ISeatTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class SeatTypeService implements ISeatTypeService {
@@ -25,7 +26,8 @@ public class SeatTypeService implements ISeatTypeService {
 
     public List<SeatType> getSeatTypes() {return seatTypeRepository.findAll();}
 
-    public SeatType getSeatType(int id) {return seatTypeRepository.findById(id).get();}
+    public SeatType getSeatType(int id) {return seatTypeRepository.findById(id).orElseThrow(
+            () -> new NoSuchElementException("Seat type with id " + id + " does not exist"));}
 
     public SeatType addSeatType(String type, double price) {
         SeatType seatType= new SeatType(type, price);
@@ -38,6 +40,6 @@ public class SeatTypeService implements ISeatTypeService {
         if(seatTypeRepository.existsById(id)) {
             seatTypeRepository.deleteById(id);
             return true;
-        } else {return false;}
+        } else { throw new NoSuchElementException("Seat type with id " + id + " does not exist");}
     }
 }

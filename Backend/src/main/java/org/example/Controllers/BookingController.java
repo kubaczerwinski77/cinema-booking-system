@@ -41,9 +41,9 @@ public class BookingController {
         if (!json.has("email") || !json.has("name") || !json.has("lastName") || !json.has("seatId")
                 || !json.has("seanseId") || !json.has("date")
         )
-            return  ResponseEntity.badRequest().body("Wrong values");
+            throw new IllegalArgumentException("Wrong values");
 
-        try {
+       // try {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.convertValue(json.get("seatId"), JsonNode.class);
             List<Long> seatsId = objectMapper.convertValue(jsonNode, new TypeReference<>() {
@@ -52,24 +52,21 @@ public class BookingController {
                     json.get("email").asText(), json.get("name").asText(), json.get("lastName").asText(),
                     LocalDateTime.parse(json.get("date").asText()), json.get("seanseId").asLong(),
                     seatsId), HttpStatus.CREATED);
-        } catch (NotFoundException e) {
+      /*  } catch (NotFoundException e) {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("Not found seats or seanse");
         }
         catch(AlreadyExistException e1)
         {
             return ResponseEntity.badRequest().body("This booking already exists");
-        }
+        }*/
     }
 
 
     @DeleteMapping(value = "/bookings/{id}")
     public ResponseEntity deleteBooking(@PathVariable("id") Long id){
-        try{
             bookingService.deleteBooking(id);
             return new ResponseEntity<>(null,HttpStatus.OK);
-        } catch (NotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("This booking doesn't exist");
-        }
+
     }
 
 }

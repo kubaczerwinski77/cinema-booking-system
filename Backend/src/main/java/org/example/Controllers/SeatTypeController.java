@@ -32,20 +32,20 @@ public class SeatTypeController {
 
     @PostMapping(value = "/seatTypes")
     public ResponseEntity<SeatType> addSeatType(@RequestBody ObjectNode json){
-        if (!json.has("type"))
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        if (!json.has("type") || !json.has("price"))
+            throw new IllegalArgumentException("Wrong values");
         return new ResponseEntity<>(seatTypeService.addSeatType(json.get("type").asText(), json.get("price").asDouble()), HttpStatus.CREATED);
 
     }
 
     @DeleteMapping(value = "/seatTypes/{id}")
     public ResponseEntity<SeatType> deleteSeatType(@PathVariable("id") int id){
-        try{
+     //   try{
             seatTypeService.deleteSeatType(id);
             return new ResponseEntity<>(null,HttpStatus.OK);
-        } catch (NotFoundException e){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        }
+       // } catch (NotFoundException e){
+      //      return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+      //  }
     }
 
 

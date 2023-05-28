@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -27,8 +28,8 @@ public class SeatService implements ISeatService{
     }
     @Override
     public List<Seat> getSeats(Long id) {
-        Optional<CinemaHall> cinemaHall = cinemaHallRepository.findById(id);
-        if(cinemaHall != null)
+
+        if(cinemaHallRepository.existsById(id))
         {
             List<Seat> seats = new ArrayList<>();
             List<Seat> allSeats = seatRepository.findAll();
@@ -40,12 +41,15 @@ public class SeatService implements ISeatService{
             return seats;
 
         }
-        return null;
+        else {
+            throw new NoSuchElementException("Cinema hall with id " + id + " does not exist");
+        }
     }
 
    public Seat getSeat(Long id)
    {
-       return seatRepository.findById(id).get();
+       return seatRepository.findById(id).orElseThrow(
+               () -> new NoSuchElementException("Seat with id " + id + " does not exist"));
    }
 
     @Override
@@ -58,7 +62,10 @@ public class SeatService implements ISeatService{
             seatRepository.saveAndFlush(seat);
             return seat;
         }
-        return null;
+        else
+        {
+         throw  new NoSuchElementException("Seat with id " + id + " or seat type with id " + seatTypeId +" does not exist");
+        }
 
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @CrossOrigin(origins = "http://localhost:6000")
 @RestController
@@ -35,7 +36,7 @@ public class CinemaController {
     @PostMapping(value = "/cinemas")
     public ResponseEntity<Cinema> addCinema(@RequestBody ObjectNode json){
         if (!json.has("name") || !json.has("city") || !json.has("address"))
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("Wrong values");
         return new ResponseEntity<>(cinemaService.addCinema(json.get("name").asText(),json.get("city").asText(),json.get("address").asText()), HttpStatus.CREATED);
 
     }
@@ -44,23 +45,23 @@ public class CinemaController {
     public ResponseEntity<Cinema> updateCinema(@PathVariable Long id, @RequestBody ObjectNode json){
         if (!json.has("name") || !json.has("city"))
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        try {
+       // try {
             Cinema cinema = cinemaService.updateCinema(id, json.get("name").asText(), json.get("address").asText(), json.get("city").asText());
             return new ResponseEntity<>(cinema, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+       // } catch (NotFoundException e) {
+     //  /     return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+     //   }
     }
 
 
     @DeleteMapping(value = "/cinemas/{id}")
     public ResponseEntity<Cinema> deleteCinema(@PathVariable("id") Long id){
-        if(cinemaHallService.hallsInCinema(id)) return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
-        try{
+        if(cinemaHallService.hallsInCinema(id)) throw new NoSuchElementException("Cinema has rooms");
+    //    try{
             cinemaService.deleteCinema(id);
             return new ResponseEntity<>(null,HttpStatus.OK);
-        } catch (NotFoundException e){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        }
+ //       } catch (NotFoundException e){
+ //           return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+  //      }
     }
 }

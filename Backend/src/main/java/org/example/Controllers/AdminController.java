@@ -32,13 +32,11 @@ public class AdminController {
     @PutMapping(value = "/admin/{id}")
     public ResponseEntity<Admin> updateAdmin(@PathVariable int id, @RequestBody ObjectNode json){
         if (!json.has("email") || !json.has("password"))
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        try {
+            throw new IllegalArgumentException("Wrong values");
+
             Admin admin = adminService.updateAdmin(id, json.get("email").asText(), json.get("password").asText());
             return new ResponseEntity<>(admin, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+
     }
 
 

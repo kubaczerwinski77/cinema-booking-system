@@ -4,8 +4,10 @@ import org.example.Model.Admin;
 import org.example.Repository.AdminRepository;
 import org.example.Repository.CinemaRepository;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class AdminService implements IAdminService{
@@ -14,7 +16,8 @@ public class AdminService implements IAdminService{
 
     public AdminService(AdminRepository adminRepository) {this.adminRepository = adminRepository;}
 
-    public Admin getAdmin(int id) {return adminRepository.findById(id).get();}
+    public Admin getAdmin(int id) {return adminRepository.findById(id).orElseThrow(
+            () -> new NoSuchElementException("Admin with id " + id + " does not exist"));}
 
     public Admin updateAdmin(int id, String email, String password){
         if (adminRepository.existsById(id) && email != null && password != null) {
@@ -23,7 +26,7 @@ public class AdminService implements IAdminService{
             admin.setPassword(password);
             adminRepository.saveAndFlush(admin);
             return admin;
-        } else {return null;}
+        } else {  throw new NotFoundException("Admin with id " + id + " does not exist");}
     }
 
 }

@@ -36,51 +36,51 @@ public class SeanseController {
     @PostMapping(value = "/seanses")
     public ResponseEntity<Seanse> addSeanse(@RequestBody ObjectNode json){
         if (!json.has("date") || !json.has("movieId") || !json.has("cinemaHallId"))
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        try {
+            throw new IllegalArgumentException("Wrong values");
+     //   try {
             return new ResponseEntity<>(seanseService.addSeanse(LocalDateTime.parse(json.get("date").asText()), json.get("movieId").asInt(), json.get("cinemaHallId").asInt()), HttpStatus.CREATED);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+      //  } catch (NotFoundException e) {
+       //     return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+       // }
     }
 
     @PutMapping(value = "/seanses/{id}")
     public ResponseEntity<Seanse> updateSeanse(@PathVariable Long id, @RequestBody ObjectNode json){
         if (!json.has("date") || !json.has("movieId") || !json.has("cinemaHallId"))
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        try {
+            throw new IllegalArgumentException("Wrong values");
+      //  try {
             Seanse seanse = seanseService.updateSeanse(id, LocalDateTime.parse(json.get("date").asText()), json.get("movieId").asInt(), json.get("cinemaHallId").asInt());
             return new ResponseEntity<>(seanse, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+        //} catch (NotFoundException e) {
+         //   return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+     //   }
     }
 
     @DeleteMapping(value = "/seanses/{id}")
     public ResponseEntity<Seanse> deleteSeanse(@PathVariable("id") Long id){
-        try{
+      //  try{
             seanseService.deleteSeanse(id);
             return new ResponseEntity<>(null,HttpStatus.OK);
-        } catch (NotFoundException e){
-            return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-        }
+     //   } catch (NotFoundException e){
+     //       return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+      //  }
     }
     @GetMapping(value = "seanses/movie/{id}")
     public ResponseEntity<List<Seanse>> getSeanseOfMovie(@PathVariable("id") Long id) {
-        try {
+      //  try {
             return new ResponseEntity<>(seanseService.getSeanseOfMovie(id), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+      //  } catch (NotFoundException e) {
+      //      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+      //  }
     }
 
     @GetMapping(value = "seanses/day/{date}")
     public ResponseEntity<List<Seanse>> getDaysSeanse(@PathVariable("date") LocalDate date) {
-        try {
+       // try {
             return new ResponseEntity<>(seanseService.getDaysSeanses(date), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+       // } catch (NotFoundException e) {
+      //      return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+      //  }
     }
 
 }

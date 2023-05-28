@@ -9,6 +9,7 @@ import org.webjars.NotFoundException;
 import org.example.Services.ICinemaService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class CinemaService implements ICinemaService{
@@ -20,7 +21,8 @@ public class CinemaService implements ICinemaService{
 
     public List<Cinema> getCinemas() {return cinemaRepository.findAll();}
 
-    public Cinema getCinema(long id) {return cinemaRepository.findById(id).get();}
+    public Cinema getCinema(long id) {return cinemaRepository.findById(id).orElseThrow(
+            () -> new NoSuchElementException("Cinema with id " + id + " does not exist"));}
 
     public Cinema updateCinema(long id, String name, String city, String address){
         if (cinemaRepository.existsById(id) && name != null && city != null && address != null) {
@@ -30,7 +32,9 @@ public class CinemaService implements ICinemaService{
             cinema.setAddress(address);
             cinemaRepository.saveAndFlush(cinema);
             return cinema;
-        } else {return null;}
+        }
+        {throw new NoSuchElementException("Cinema with id " + id + " does not exist");
+        }
     }
 
     public Cinema addCinema(String name, String city, String address) {

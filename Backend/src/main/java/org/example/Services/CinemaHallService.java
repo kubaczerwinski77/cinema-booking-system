@@ -10,6 +10,7 @@ import org.webjars.NotFoundException;
 import org.example.Services.ICinemaHallService;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -24,7 +25,8 @@ public class CinemaHallService implements ICinemaHallService {
 
     public List<CinemaHall> getCinemaHalls() {return cinemaHallRepository.findAll();}
 
-    public CinemaHall getCinemaHall(long id) {return cinemaHallRepository.findById(id).get();}
+    public CinemaHall getCinemaHall(long id) {return cinemaHallRepository.findById(id).orElseThrow(
+            () -> new NoSuchElementException("Cinema hall with id " + id + " does not exist"));}
 
     public CinemaHall updateCinemaHall(long id,String name, int totalSize){
         if (cinemaHallRepository.existsById(id) && name != null && totalSize > 0) {
@@ -33,7 +35,8 @@ public class CinemaHallService implements ICinemaHallService {
             cinemaHall.setTotalSize(totalSize);
             cinemaHallRepository.saveAndFlush(cinemaHall);
             return cinemaHall;
-        } else {return null;}
+        } else {throw new NoSuchElementException("Cinema hall with id " + id + " does not exist");
+        }
     }
 
     public CinemaHall addCinemaHall(String name, int totalSize, long cinemaId) {
@@ -43,7 +46,7 @@ public class CinemaHallService implements ICinemaHallService {
         if (cinemaRepository.findById(cinemaId).isPresent()) {
             cinemaHall.setCinema(cinemaRepository.findById(cinemaId).get());
             return cinemaHallRepository.save(cinemaHall);
-        } else {throw new NotFoundException("Cinema doesn't exist");
+        } else {throw new NoSuchElementException("Cinema with id " + cinemaId + " does not exist");
         }
        // return cinemaHall;
     }
@@ -59,10 +62,12 @@ public class CinemaHallService implements ICinemaHallService {
         }
         return false;
     }
-    public boolean deleteCinemaHall(long id){
-        if(cinemaHallRepository.existsById(id)) {
+    public boolean deleteCinemaHall(long id) {
+        if (cinemaHallRepository.existsById(id)) {
             cinemaHallRepository.deleteById(id);
             return true;
-        } else {return false;}
+        } else {
+            throw new NoSuchElementException("Cinema hall with id " + id + " does not exist");
+        }
     }
 }

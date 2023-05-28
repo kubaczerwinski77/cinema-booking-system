@@ -10,6 +10,7 @@ import org.webjars.NotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class SeanseService implements ISeansService{
@@ -27,10 +28,11 @@ public class SeanseService implements ISeansService{
     }
 
     public Seanse getSeanse(long id) {
-        return seanseRepository.findById(id).get();
+        return seanseRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Seanse with id " + id + " does not exist"));
     }
 
-    public Seanse updateSeanse(long id, LocalDateTime date, long movieId, long cinemaHallId) throws NotFoundException {
+    public Seanse updateSeanse(long id, LocalDateTime date, long movieId, long cinemaHallId) throws NoSuchElementException {
         if (seanseRepository.existsById(id) && cinemaHallRepository.existsById(cinemaHallId)) {
             Seanse seanse = seanseRepository.findById(id).get();
             seanse.setDate(date);
@@ -40,7 +42,7 @@ public class SeanseService implements ISeansService{
             return seanse;
 
         } else {
-            throw new NotFoundException("not found seanse or cinemaHall");
+            throw new NoSuchElementException("Seanse with id " + id + " does not exist");
         }
     }
 
@@ -54,7 +56,7 @@ public class SeanseService implements ISeansService{
             seanseRepository.saveAndFlush(seanse);
             return seanse;
         } else {
-            throw new NotFoundException("not found cinema hall");
+            throw new NoSuchElementException("Cinema hall with id " + cinemaHallId + " does not exist");
         }
     }
 
@@ -65,25 +67,25 @@ public class SeanseService implements ISeansService{
             return true;
 
         } else {
-            throw new NotFoundException("not found seanse");
+            throw new NoSuchElementException("Seanse with id " + id + " does not exist");
         }
 
     }
 
-    public List<Seanse> getSeanseOfMovie(long movieId) throws NotFoundException {
+    public List<Seanse> getSeanseOfMovie(long movieId) throws NoSuchElementException {
         List<Seanse> seanses = seanseRepository.findAll().stream().filter(r -> r.getMovieId() == movieId).toList();
 
         if (seanses.isEmpty())
-            throw new NotFoundException("not found movie");
+            throw new NoSuchElementException("Movie with id " + movieId + " does not exist");
 
         return seanses;
     }
 
-    public List<Seanse> getDaysSeanses(LocalDate date) throws NotFoundException {
+    public List<Seanse> getDaysSeanses(LocalDate date) throws NoSuchElementException {
         List<Seanse> seanses = seanseRepository.findAll().stream().filter(r -> r.getDate().toLocalDate() == date).toList();
 
         if (seanses.isEmpty())
-            throw new NotFoundException("not found date");
+            throw new NoSuchElementException("Seanses in " + date + " do not exist");
 
         return seanses;
     }

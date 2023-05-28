@@ -17,6 +17,7 @@ import org.webjars.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -41,7 +42,8 @@ public class BookingService implements  IBookingService {
     }
 
     public Booking getBooking(long id) {
-        return bookingRepository.findById(id).get();
+        return bookingRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException("Booking with id " + id + " does not exist"));
     }
 
 
@@ -55,7 +57,7 @@ public class BookingService implements  IBookingService {
         for (Long id : seatId) {
             if (seatRepository.existsById(id))
                 seatList.add(seatRepository.findById(id).get());
-            else throw new NotFoundException("not found seat");
+            else throw new NoSuchElementException("Seat with id " + id + " does not exist");;
         }
         Optional<Seanse> seanse = seanseRepository.findById(seanseId);
         if (seanse.isPresent()) {
@@ -67,7 +69,7 @@ public class BookingService implements  IBookingService {
                     reserved.add(reservedSeats);
 
                 } catch (Exception e) {
-                    throw new NotFoundException("not found seanse");
+                    throw new NoSuchElementException("Seanse with id " + seanseId + " does not exist");
                 }
             }
                 try {
@@ -79,7 +81,7 @@ public class BookingService implements  IBookingService {
                 }
             return booking;
         } else {
-            throw new NotFoundException("not found seanse");
+            throw new NoSuchElementException("Seanse with id " + seanseId + " does not exist");
         }
     }
 
@@ -92,7 +94,7 @@ public class BookingService implements  IBookingService {
             return true;
 
         } else {
-            throw new NotFoundException("not found booking");
+            throw new NoSuchElementException("Booking with id " + id + " does not exist");
         }
 
     }

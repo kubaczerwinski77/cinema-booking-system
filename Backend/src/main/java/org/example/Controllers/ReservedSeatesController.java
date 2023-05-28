@@ -14,6 +14,7 @@ import org.example.Services.ReservedSeatsService;
 import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @CrossOrigin(origins = "http://localhost:6000")
 @RestController
@@ -33,10 +34,7 @@ public class ReservedSeatesController {
 
     @GetMapping(value = "/reservedSeates/{id}")
     public ResponseEntity<List<ReservedSeats>> getAllReservedSeatesInSeanse(long id) {
-        try {
             return new ResponseEntity<>(reservedSeatsService.getReservedSeatInSeanse(id), HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+
     }
 }

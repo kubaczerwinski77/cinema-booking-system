@@ -39,13 +39,13 @@ public class SeatController {
     @PutMapping(value = "/seat/{id}")
     public ResponseEntity<Seat> updateSeat(@PathVariable Long id, @RequestBody ObjectNode json){
         if (!json.has("seatTypeId"))
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        try {
+            throw new IllegalArgumentException("Wrong values");
+       // try {
             Seat seat = seatService.updateSeat(id, json.get("seatTypeId").asInt());
             return new ResponseEntity<>(seat, HttpStatus.OK);
-        } catch (NotFoundException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    //    } catch (NotFoundException e) {
+     //       return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+     //   }
     }
 
 }
