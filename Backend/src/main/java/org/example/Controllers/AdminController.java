@@ -6,6 +6,7 @@ import org.example.Model.Cinema;
 import org.example.Services.AdminService;
 import org.example.Services.CinemaHallService;
 import org.example.Services.CinemaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:6000")
 @RestController
 public class AdminController {
+
     private final AdminService adminService;
 
 

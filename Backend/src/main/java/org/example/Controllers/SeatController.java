@@ -21,6 +21,7 @@ public class SeatController {
     private final SeatService seatService;
 
 
+
     public SeatController(SeatService seatService) {
         this.seatService= seatService;
 
