@@ -8,6 +8,6 @@ public interface ISeatTypeService {
     public List<SeatType> getSeatTypes();
 
     SeatType getSeatType(int id);
-    SeatType addSeatType(String type);
+    SeatType addSeatType(String type, double price);
     boolean deleteSeatType(int id);
 }

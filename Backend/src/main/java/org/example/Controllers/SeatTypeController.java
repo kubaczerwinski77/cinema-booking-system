@@ -34,7 +34,7 @@ public class SeatTypeController {
     public ResponseEntity<SeatType> addSeatType(@RequestBody ObjectNode json){
         if (!json.has("type"))
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(seatTypeService.addSeatType(json.get("type").asText()), HttpStatus.CREATED);
+        return new ResponseEntity<>(seatTypeService.addSeatType(json.get("type").asText(), json.get("price").asDouble()), HttpStatus.CREATED);
 
     }
 

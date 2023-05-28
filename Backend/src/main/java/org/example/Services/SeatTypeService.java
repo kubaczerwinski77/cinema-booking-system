@@ -27,8 +27,8 @@ public class SeatTypeService implements ISeatTypeService {
 
     public SeatType getSeatType(int id) {return seatTypeRepository.findById(id).get();}
 
-    public SeatType addSeatType(String type) {
-        SeatType seatType= new SeatType(type);
+    public SeatType addSeatType(String type, double price) {
+        SeatType seatType= new SeatType(type, price);
         seatTypeRepository.saveAndFlush(seatType);
         return seatType;
     }

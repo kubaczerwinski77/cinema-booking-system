@@ -18,6 +18,9 @@ public class SeatType {
     @Column(nullable = false)
     String type;
 
+    @Column(nullable = false)
+    private double price;
+
     @JsonIgnore
     @OneToMany()
     @JoinColumn(name = "seat_type_id")
@@ -26,8 +29,10 @@ public class SeatType {
     public SeatType() {
     }
 
-    public SeatType(String type) {
+    public SeatType(String type, double price) {
+
         this.type = type;
+        this.price = price;
     }
 
     public long getId() {
@@ -41,6 +46,14 @@ public class SeatType {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     public List<Seat> getSeats() {

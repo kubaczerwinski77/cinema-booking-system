@@ -1,0 +1,239 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Karolina
+      changes:
+        - createTable:
+            tableName: admin
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: booking
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+              - column:
+                  name: last_name
+                  type: varchar(255)
+              - column:
+                  name: date
+                  type: datetime
+                  constraints:
+                    nullable: true
+        - createTable:
+            tableName: cinema
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: cinema_hall
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_size
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cinema_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: cinema_hall
+            baseColumnNames: cinema_id
+            referencedTableName: cinema
+            referencedColumnNames: id
+            constraintName: fk_cinema_id
+        - createTable:
+            tableName: seat_type
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: type
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: double
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: seat
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: row_in_hall
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: column_in_hall
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seat_type_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cinema_hall_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: seat
+            baseColumnNames: cinema_hall_id
+            referencedTableName: cinema_hall
+            referencedColumnNames: id
+            constraintName: fk_cinema_hall_id
+        - addForeignKeyConstraint:
+            baseTableName: seat
+            baseColumnNames: seat_type_id
+            referencedTableName: seat_type
+            referencedColumnNames: id
+            constraintName: fk_seat_type_id
+        - createTable:
+            tableName: seanse
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: seanse_date
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: movie_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cinema_hall_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+              baseTableName: seanse
+              baseColumnNames: cinema_hall_id
+              referencedTableName: cinema_hall
+              referencedColumnNames: id
+              constraintName: fk_cinema_hall2_id
+        - createTable:
+            tableName: reserved_seats
+            columns:
+              - column:
+                  name: seanse_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: booking_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: seat_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: reserved_seats
+            columnNames: seanse_id,  seat_id
+            constraintName: reserved_seats
+        - addForeignKeyConstraint:
+            baseTableName: reserved_seats
+            baseColumnNames: seanse_id
+            referencedTableName: seanse
+            referencedColumnNames: id
+            constraintName: fk_seanse2_id
+        - addForeignKeyConstraint:
+            baseTableName: reserved_seats
+            baseColumnNames: booking_id
+            referencedTableName: booking
+            referencedColumnNames: id
+            constraintName: fk_booking2_id
+        - addForeignKeyConstraint:
+            baseTableName: reserved_seats
+            baseColumnNames: seat_id
+            referencedTableName: seat
+            referencedColumnNames: id
+            constraintName: fk_seat2_id
+
+
+
+
+
+

@@ -15,8 +15,7 @@ public class Seat{
     @Column(nullable = false)
     private int columnInHall;
 
-    @Column(nullable = false)
-    private double price;
+
 
  //   @JsonIgnore
     @JoinColumn(name = "seat_type_id", nullable = false)
@@ -36,10 +35,9 @@ public class Seat{
     public Seat() {
     }
 
-    public Seat(int rowInHall, int columnInHall, float price, SeatType seatType, CinemaHall cinemaHall) {
+    public Seat(int rowInHall, int columnInHall, SeatType seatType, CinemaHall cinemaHall) {
         this.rowInHall = rowInHall;
         this.columnInHall = columnInHall;
-        this.price = price;
         this.seatType = seatType;
         this.cinemaHall = cinemaHall;
     }
@@ -68,13 +66,6 @@ public class Seat{
         this.columnInHall = column;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
 
     public SeatType getSeatType() {
         return seatType;
