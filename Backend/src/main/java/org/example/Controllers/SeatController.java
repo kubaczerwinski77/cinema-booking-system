@@ -14,7 +14,7 @@ import org.webjars.NotFoundException;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:6000")
+//@CrossOrigin(origins = "http://localhost:6000")
 @RestController
 public class SeatController {
 
