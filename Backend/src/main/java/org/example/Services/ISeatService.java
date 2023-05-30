@@ -11,4 +11,6 @@ public interface ISeatService {
     Seat getSeat(Long id);
     Seat updateSeat(Long id, int seatTypeId);
 
+    Seat addSeat(int row, int column, int seatTypeId, long cinemaHallId);
+
 }
