@@ -1,6 +1,16 @@
-version: "3"
-
+version: "3.9"
 services:
+  mysql:
+    container_name: mysqldb
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=cinemaProject
+    volumes:
+      - mysql_data:/var/lib/mysql
+
   frontend:
     container_name: cinema-frontend
     build:
@@ -8,7 +18,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    restart: no
+    restart: always
+
   backend:
     container_name: cinema-backend
     build:
@@ -16,4 +27,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    restart: no
+    depends_on:
+      - mysql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/cinemaProject
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    restart: always
+
+volumes:
+  mysql_data:
