@@ -10,7 +10,7 @@ import org.webjars.NotFoundException;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:6000")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class CinemaHallController {
 
