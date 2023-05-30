@@ -8,12 +8,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    restart: always
-  # backend:
-  #   container_name: cinema-backend
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8080:8080"
-  #   restart: always
+    restart: no
+  backend:
+    container_name: cinema-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: no
