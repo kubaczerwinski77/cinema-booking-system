@@ -46,7 +46,7 @@ public class SeanseService implements ISeansService{
         }
     }
 
-    public Seanse addSeanse(LocalDateTime date, long movieId, long cinemaHallId) throws NotFoundException {
+    public Seanse addSeanse(LocalDateTime date, long movieId, long cinemaHallId)  {
         if (cinemaHallRepository.existsById(cinemaHallId)) {
             Seanse seanse = new Seanse();
             seanse.setDate(date);

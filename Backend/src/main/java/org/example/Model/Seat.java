@@ -79,9 +79,11 @@ public class Seat{
         return cinemaHall;
     }
 
+    public void setCinemaHall(CinemaHall cinemaHall) {
+        this.cinemaHall = cinemaHall;
+    }
 
-
-   /* public List<ReservedSeats> getReservedSeats() {
+    /* public List<ReservedSeats> getReservedSeats() {
         return reservedSeats;
     }*/
 }

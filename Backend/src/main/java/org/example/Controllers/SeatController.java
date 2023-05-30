@@ -3,6 +3,7 @@ package org.example.Controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.example.Model.CinemaHall;
+import org.example.Model.Seanse;
 import org.example.Model.Seat;
 import org.example.Repository.SeatRepository;
 import org.example.Services.CinemaHallService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 //@CrossOrigin(origins = "http://localhost:6000")
@@ -47,6 +49,17 @@ public class SeatController {
     //    } catch (NotFoundException e) {
      //       return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
      //   }
+    }
+
+    @PostMapping(value = "/seats")
+    public ResponseEntity<Seat> addSeat(@RequestBody ObjectNode json){
+        if (!json.has("row") || !json.has("column") || !json.has("cinemaHallId") || !json.has("seatTypeId"))
+            throw new IllegalArgumentException("Wrong values");
+        //   try {
+        return new ResponseEntity<>(seatService.addSeat(json.get("row").asInt(), json.get("column").asInt(), json.get("cinemaHallId").asInt(), json.get("seatTypeId").asInt()), HttpStatus.CREATED);
+        //  } catch (NotFoundException e) {
+        //     return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        // }
     }
 
 }
