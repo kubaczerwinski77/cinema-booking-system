@@ -16,7 +16,7 @@ import org.webjars.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-//@CrossOrigin(origins = "http://localhost:6000")
+@CrossOrigin(origins = "http://localhost:6000")
 @RestController
 public class SeatController {
 

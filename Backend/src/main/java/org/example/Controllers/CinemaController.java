@@ -12,7 +12,7 @@ import org.webjars.NotFoundException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-//@CrossOrigin(origins = "http://localhost:6000")
+@CrossOrigin(origins = "http://localhost:6000")
 @RestController
 public class CinemaController {
     private final CinemaService cinemaService;
