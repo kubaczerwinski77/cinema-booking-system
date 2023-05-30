@@ -1,0 +1,39 @@
+# Ignore IDE and editor files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.bak
+*~
+
+# Ignore build output and compiled files
+target/
+bin/
+build/
+out/
+*.class
+*.jar
+
+# Ignore dependency management files
+node_modules/
+bower_components/
+vendor/
+
+# Ignore logs and temporary files
+logs/
+*.log
+*.log.*
+*.tmp
+
+# Ignore OS and system-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore configuration files with sensitive data
+application.properties
+application.yml
+credentials.properties
+
+# Ignore user-specific configuration files
+application-local.properties
