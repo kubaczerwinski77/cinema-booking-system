@@ -12,7 +12,7 @@ import org.webjars.NotFoundException;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 public class SeatTypeController {
     private final SeatTypeService seatTypeService;
