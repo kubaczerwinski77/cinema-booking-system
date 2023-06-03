@@ -1,3 +1,6 @@
 databaseChangeLog:
   - include:
      file: classpath:/db/changelog/changes/001-create-tables.yml
+
+  - include:
+     file: classpath:/db/changelog/changes/002-insert-data.yml
