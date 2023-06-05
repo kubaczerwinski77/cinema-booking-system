@@ -3,8 +3,11 @@ import {
   ColorSchemeProvider,
   MantineProvider,
 } from "@mantine/core";
-import { useState } from "react";
 import AppRouter from "./AppRouter";
+import { useState } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("light");
@@ -23,7 +26,9 @@ export default function App() {
         withGlobalStyles
         withNormalizeCSS
       >
-        <AppRouter />
+        <QueryClientProvider client={queryClient}>
+          <AppRouter />
+        </QueryClientProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
