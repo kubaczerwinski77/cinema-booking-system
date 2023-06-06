@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert_seat_data
+      author: Karolina
+      changes:
+        - sql:
+            sql: >
+              INSERT INTO seanse (id, seanseDate, movieId, cinema_hall_id)
+              VALUES
+                  (1, "2023-07-09T12:30", 1, 1),
+                  (1, "2023-08-09T12:30", 1, 1),
+                  (1, "2023-08-10T12:30", 1, 2),
+                  (1, "2023-08-10T12:30", 1, 2),
+  
