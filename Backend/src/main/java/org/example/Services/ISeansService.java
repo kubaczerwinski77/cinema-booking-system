@@ -12,9 +12,9 @@ public interface ISeansService {
     public List<Seanse> getSeanses();
 
     Seanse getSeanse(long id);
-    Seanse addSeanse(LocalDateTime date, long movieId, long cinemaHallId);
-    Seanse updateSeanse(long id, LocalDateTime date, long movieId, long cinemaHallId);
+    Seanse addSeanse(LocalDateTime date, String movieId, long cinemaHallId);
+    Seanse updateSeanse(long id, LocalDateTime date, String movieId, long cinemaHallId);
     boolean deleteSeanse(long id);
-    public List<Seanse> getSeanseOfMovie(long movieId);
+    public List<Seanse> getSeanseOfMovie(String movieId);
     public List<Seanse> getDaysSeanses(LocalDate date);
 }

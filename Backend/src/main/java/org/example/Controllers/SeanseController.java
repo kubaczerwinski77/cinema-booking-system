@@ -38,7 +38,7 @@ public class SeanseController {
         if (!json.has("date") || !json.has("movieId") || !json.has("cinemaHallId"))
             throw new IllegalArgumentException("Wrong values");
      //   try {
-            return new ResponseEntity<>(seanseService.addSeanse(LocalDateTime.parse(json.get("date").asText()), json.get("movieId").asInt(), json.get("cinemaHallId").asInt()), HttpStatus.CREATED);
+            return new ResponseEntity<>(seanseService.addSeanse(LocalDateTime.parse(json.get("date").asText()), json.get("movieId").asText(), json.get("cinemaHallId").asInt()), HttpStatus.CREATED);
       //  } catch (NotFoundException e) {
        //     return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
        // }
@@ -49,7 +49,7 @@ public class SeanseController {
         if (!json.has("date") || !json.has("movieId") || !json.has("cinemaHallId"))
             throw new IllegalArgumentException("Wrong values");
       //  try {
-            Seanse seanse = seanseService.updateSeanse(id, LocalDateTime.parse(json.get("date").asText()), json.get("movieId").asInt(), json.get("cinemaHallId").asInt());
+            Seanse seanse = seanseService.updateSeanse(id, LocalDateTime.parse(json.get("date").asText()), json.get("movieId").asText(), json.get("cinemaHallId").asInt());
             return new ResponseEntity<>(seanse, HttpStatus.OK);
         //} catch (NotFoundException e) {
          //   return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -66,7 +66,7 @@ public class SeanseController {
       //  }
     }
     @GetMapping(value = "seanses/movie/{id}")
-    public ResponseEntity<List<Seanse>> getSeanseOfMovie(@PathVariable("id") Long id) {
+    public ResponseEntity<List<Seanse>> getSeanseOfMovie(@PathVariable("id") String id) {
       //  try {
             return new ResponseEntity<>(seanseService.getSeanseOfMovie(id), HttpStatus.OK);
       //  } catch (NotFoundException e) {

@@ -19,10 +19,10 @@ public class Seanse {
     private LocalDateTime seanseDate;
 
     @Column(nullable = false)
-    private long movieId;
+    private String movieId;
 
-    @JsonIgnore
-    @JsonBackReference
+   // @JsonIgnore
+   // @JsonBackReference
     @JoinColumn(name = "cinema_hall_id")
     @ManyToOne
     private CinemaHall cinemaHall;
@@ -31,7 +31,7 @@ public class Seanse {
     @OneToMany(cascade = CascadeType.ALL)
     private List<ReservedSeats> reservedSeats = new ArrayList<>();
 
-    public Seanse(LocalDateTime seanseDate, Long movieId, CinemaHall cinemaHall)
+    public Seanse(LocalDateTime seanseDate, String movieId, CinemaHall cinemaHall)
     {
         this.seanseDate = seanseDate;
         this.movieId = movieId;
@@ -57,11 +57,11 @@ public class Seanse {
         this.seanseDate = date;
     }
 
-    public long getMovieId() {
+    public String getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(long movieId) {
+    public void setMovieId(String movieId) {
         this.movieId = movieId;
     }
 

@@ -177,7 +177,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: movie_id
-                  type: bigint
+                  type: varchar(30)
                   constraints:
                     nullable: false
               - column:

@@ -4,3 +4,6 @@ databaseChangeLog:
 
   - include:
      file: classpath:/db/changelog/changes/002-insert-data.yml
+
+  - include:
+      file: classpath:/db/changelog/changes/003-insertSeanse.yml

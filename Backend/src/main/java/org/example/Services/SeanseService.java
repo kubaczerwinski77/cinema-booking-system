@@ -32,7 +32,7 @@ public class SeanseService implements ISeansService{
                 () -> new NoSuchElementException("Seanse with id " + id + " does not exist"));
     }
 
-    public Seanse updateSeanse(long id, LocalDateTime date, long movieId, long cinemaHallId) throws NoSuchElementException {
+    public Seanse updateSeanse(long id, LocalDateTime date, String movieId, long cinemaHallId) throws NoSuchElementException {
         if (seanseRepository.existsById(id) && cinemaHallRepository.existsById(cinemaHallId)) {
             Seanse seanse = seanseRepository.findById(id).get();
             seanse.setDate(date);
@@ -46,7 +46,7 @@ public class SeanseService implements ISeansService{
         }
     }
 
-    public Seanse addSeanse(LocalDateTime date, long movieId, long cinemaHallId)  {
+    public Seanse addSeanse(LocalDateTime date, String movieId, long cinemaHallId)  {
         if (cinemaHallRepository.existsById(cinemaHallId)) {
             Seanse seanse = new Seanse();
             seanse.setDate(date);
@@ -72,8 +72,8 @@ public class SeanseService implements ISeansService{
 
     }
 
-    public List<Seanse> getSeanseOfMovie(long movieId) throws NoSuchElementException {
-        List<Seanse> seanses = seanseRepository.findAll().stream().filter(r -> r.getMovieId() == movieId).toList();
+    public List<Seanse> getSeanseOfMovie(String movieId) throws NoSuchElementException {
+        List<Seanse> seanses = seanseRepository.findAll().stream().filter(r -> r.getMovieId().equals(movieId)).toList();
 
         if (seanses.isEmpty())
             throw new NoSuchElementException("Movie with id " + movieId + " does not exist");
