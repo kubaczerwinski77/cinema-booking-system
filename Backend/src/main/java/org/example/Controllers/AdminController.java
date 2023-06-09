@@ -31,6 +31,11 @@ public class AdminController {
         return new ResponseEntity<>(adminService.getAdmin(id), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/adminByEmail/{email}")
+    public ResponseEntity<Admin> getAdminByEmail(@PathVariable("email") String email){
+        return new ResponseEntity<>(adminService.loadUserByUsername(email), HttpStatus.OK);
+    }
+
     @PutMapping(value = "/admin/{id}")
     public ResponseEntity<Admin> updateAdmin(@PathVariable int id, @RequestBody ObjectNode json){
         if (!json.has("email") || !json.has("password"))
