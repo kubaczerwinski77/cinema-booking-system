@@ -25,6 +25,7 @@ logs/
 *.log
 *.log.*
 *.tmp
+*.env*
 
 # Ignore OS and system-specific files
 .DS_Store

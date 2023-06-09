@@ -11,6 +11,8 @@ import {
   useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
+import Login from "../auth/Login";
+import Logout from "../auth/Logout";
 
 interface IProps {
   opened: boolean;
@@ -52,6 +54,8 @@ const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
         >
           {isDark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
         </ActionIcon>
+        <Login />
+        <Logout />
       </Flex>
     </Header>
   );
