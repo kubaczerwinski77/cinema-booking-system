@@ -26,7 +26,17 @@ const MovieBookingPage: FC = () => {
     if (!choosenSeance) {
       return;
     }
-    navigate(`/order/${choosenSeance.id}`);
+    navigate(
+      `/order?seanceId=${choosenSeance.id}&movieId=${id}&cinemaHallId=${choosenSeance.cinemaHall.id}`
+    );
+  };
+
+  const handleBadgeClick = (seance: ISeance) => {
+    if (choosenSeance?.id === seance.id) {
+      setChoosenSeance(undefined);
+      return;
+    }
+    setChoosenSeance(seance);
   };
 
   useEffect(() => {
@@ -115,14 +125,13 @@ const MovieBookingPage: FC = () => {
           size="sm"
           color="dimmed"
           style={{
-            fontSize: "1.2rem",
             fontWeight: "bold",
           }}
         >
           <br />
           About the movie:
         </Text>
-        <Text size="md" align="justify">
+        <Text size="sm" align="justify">
           {movie.Plot}
         </Text>
 
@@ -130,7 +139,6 @@ const MovieBookingPage: FC = () => {
           size="sm"
           color="dimmed"
           style={{
-            fontSize: "1.2rem",
             fontWeight: "bold",
           }}
         >
@@ -145,7 +153,7 @@ const MovieBookingPage: FC = () => {
                 key={seance.id}
                 choosen={seance.id === choosenSeance?.id}
                 dateString={seance.date}
-                onClick={() => setChoosenSeance(seance)}
+                onClick={() => handleBadgeClick(seance)}
               />
             ))}
         </Flex>
@@ -156,7 +164,7 @@ const MovieBookingPage: FC = () => {
             disabled={!choosenSeance}
             onClick={handleOrderClick}
           >
-            Order ticket
+            Choose seats
           </Button>
         </Flex>
       </Card>

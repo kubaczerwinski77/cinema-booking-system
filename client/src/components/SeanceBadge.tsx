@@ -20,6 +20,10 @@ const SeanceBadge: FC<IProps> = ({ dateString, choosen, onClick }) => {
         width: "fit-content",
         cursor: "pointer",
         border: "3px solid #ccc",
+        userSelect: "none",
+        "&:hover": {
+          backgroundColor: "#ccc",
+        },
       }}
     >
       {date.toLocaleDateString()} {date.getHours()}:{date.getMinutes()}

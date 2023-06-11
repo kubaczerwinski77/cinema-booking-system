@@ -5,6 +5,7 @@ import { movieIdsToPromote, movies } from "./movies";
 import MoviesList from "./components/MoviesList";
 import MovieDetails from "./components/MovieDetails";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ChooseSeats from "./components/ChooseSeats";
 
 const AppRouter = () => {
   const [opened, setOpened] = useState(false);
@@ -18,7 +19,7 @@ const AppRouter = () => {
           p="md"
           hiddenBreakpoint="sm"
           hidden={!opened}
-          width={{ sm: 200, lg: 300 }}
+          width={{ sm: 150, lg: 150 }}
         >
           <Text>Application navbar</Text>
         </Navbar>
@@ -37,6 +38,7 @@ const AppRouter = () => {
             }
           />
           <Route path="/:id" element={<MovieDetails />} />
+          <Route path="/order" element={<ChooseSeats />} />
         </Routes>
       </BrowserRouter>
     </AppShell>
