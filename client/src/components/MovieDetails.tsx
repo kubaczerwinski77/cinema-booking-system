@@ -1,12 +1,45 @@
-import { FC } from "react";
-import { Container, Text, Image, Card, Group, Badge } from "@mantine/core";
+import { FC, useEffect, useState } from "react";
+import {
+  Container,
+  Text,
+  Image,
+  Card,
+  Group,
+  Badge,
+  Flex,
+  Button,
+} from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { movies } from "../movies";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ISeance } from "../interfaces/seance";
+import SeanceBadge from "./SeanceBadge";
 
 const MovieBookingPage: FC = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const movie = movies.find((movie) => movie.imdbID === id);
+  const [seanses, setSeanses] = useState<ISeance[]>([]);
+  const [choosenSeance, setChoosenSeance] = useState<ISeance>();
+
+  const handleOrderClick = () => {
+    if (!choosenSeance) {
+      return;
+    }
+    navigate(`/order/${choosenSeance.id}`);
+  };
+
+  useEffect(() => {
+    const fetchSeanses = async () => {
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_URL}/seanses/movie/${id}`
+      );
+      const data = await res.json();
+      setSeanses(data);
+    };
+
+    fetchSeanses();
+  }, [id]);
 
   if (!movie) {
     return (
@@ -92,6 +125,40 @@ const MovieBookingPage: FC = () => {
         <Text size="md" align="justify">
           {movie.Plot}
         </Text>
+
+        <Text
+          size="sm"
+          color="dimmed"
+          style={{
+            fontSize: "1.2rem",
+            fontWeight: "bold",
+          }}
+        >
+          <br />
+          Choose seance:
+        </Text>
+
+        <Flex gap="16px" mt={10} sx={{ overflowX: "scroll" }}>
+          {seanses.length !== 0 &&
+            seanses.map((seance) => (
+              <SeanceBadge
+                key={seance.id}
+                choosen={seance.id === choosenSeance?.id}
+                dateString={seance.date}
+                onClick={() => setChoosenSeance(seance)}
+              />
+            ))}
+        </Flex>
+        <Flex justify="flex-end" mt={10}>
+          <Button
+            variant="light"
+            color="blue"
+            disabled={!choosenSeance}
+            onClick={handleOrderClick}
+          >
+            Order ticket
+          </Button>
+        </Flex>
       </Card>
     </Container>
   );
