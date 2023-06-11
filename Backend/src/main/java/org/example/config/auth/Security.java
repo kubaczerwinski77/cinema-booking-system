@@ -37,7 +37,7 @@ public class Security {
                 .cors().and()
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/seanses")
+                .requestMatchers(HttpMethod.POST,"/seanses")
                 .authenticated()
 
 
