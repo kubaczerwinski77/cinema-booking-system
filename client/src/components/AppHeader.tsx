@@ -1,18 +1,14 @@
-import { Dispatch, FC, SetStateAction } from "react";
-import { IconSun, IconMoonStars } from "@tabler/icons-react";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { Dispatch, FC, SetStateAction, useLayoutEffect } from "react";
 import {
-  ActionIcon,
   Burger,
   Flex,
   Group,
   Header,
   MediaQuery,
   Text,
-  useMantineColorScheme,
   useMantineTheme,
 } from "@mantine/core";
-import Login from "../auth/Login";
-import Logout from "../auth/Logout";
 
 interface IProps {
   opened: boolean;
@@ -21,8 +17,21 @@ interface IProps {
 
 const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
   const theme = useMantineTheme();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  const isDark = colorScheme === "dark";
+
+  useLayoutEffect(() => {
+    // @ts-ignore
+    google.accounts.id.renderButton(
+      document.getElementById("google-login-button"),
+      {
+        theme: "outline",
+        size: "large",
+        text: "continue_with",
+        width: "auto",
+        height: 50,
+        longtitle: true,
+      }
+    );
+  }, []);
 
   return (
     <Header height={{ base: 50, md: 70 }} p="md">
@@ -38,7 +47,7 @@ const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
         </MediaQuery>
 
         <Group spacing={0}>
-          <Text size="36px" weight={700} color={isDark ? "yellow" : "blue"}>
+          <Text size="36px" weight={700} color={"blue"}>
             Cinema
           </Text>
           <Text size="36px" weight={700}>
@@ -46,16 +55,7 @@ const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
           </Text>
         </Group>
 
-        <ActionIcon
-          variant="outline"
-          color={isDark ? "yellow" : "blue"}
-          onClick={() => toggleColorScheme()}
-          title="Toggle color scheme"
-        >
-          {isDark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
-        </ActionIcon>
-        <Login />
-        <Logout />
+        <Flex id="google-login-button"></Flex>
       </Flex>
     </Header>
   );

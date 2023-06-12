@@ -1,12 +1,64 @@
-import { FC } from "react";
-import { Container, Text, Image, Card, Group, Badge } from "@mantine/core";
+import { FC, useContext, useEffect, useState } from "react";
+import {
+  Container,
+  Text,
+  Image,
+  Card,
+  Group,
+  Badge,
+  Flex,
+  Button,
+} from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import { movies } from "../movies";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { ISeance } from "../interfaces/seance";
+import SeanceBadge from "./SeanceBadge";
+import { ReservationContext } from "../AppRouter";
 
 const MovieBookingPage: FC = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const movie = movies.find((movie) => movie.imdbID === id);
+  const [seanses, setSeanses] = useState<ISeance[]>([]);
+  const [choosenSeance, setChoosenSeance] = useState<ISeance>();
+  const { dispatch: setReservation } = useContext(ReservationContext);
+
+  const handleOrderClick = () => {
+    if (!choosenSeance) {
+      return;
+    }
+    navigate(
+      `/order?seanceId=${choosenSeance.id}&movieId=${id}&cinemaHallId=${choosenSeance.cinemaHall.id}`
+    );
+    setReservation({
+      data: {
+        seanceId: choosenSeance.id,
+        movieId: id,
+        cinemaHallId: choosenSeance.cinemaHall.id,
+      },
+    });
+  };
+
+  const handleBadgeClick = (seance: ISeance) => {
+    if (choosenSeance?.id === seance.id) {
+      setChoosenSeance(undefined);
+      return;
+    }
+    setChoosenSeance(seance);
+  };
+
+  useEffect(() => {
+    const fetchSeanses = async () => {
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_URL}/seanses/movie/${id}`
+      );
+      const data = await res.json();
+      setSeanses(data);
+    };
+
+    fetchSeanses();
+  }, [id]);
 
   if (!movie) {
     return (
@@ -82,16 +134,48 @@ const MovieBookingPage: FC = () => {
           size="sm"
           color="dimmed"
           style={{
-            fontSize: "1.2rem",
             fontWeight: "bold",
           }}
         >
           <br />
           About the movie:
         </Text>
-        <Text size="md" align="justify">
+        <Text size="sm" align="justify">
           {movie.Plot}
         </Text>
+
+        <Text
+          size="sm"
+          color="dimmed"
+          style={{
+            fontWeight: "bold",
+          }}
+        >
+          <br />
+          Choose seance:
+        </Text>
+
+        <Flex gap="16px" mt={10} sx={{ overflowX: "scroll" }}>
+          {seanses.length !== 0 &&
+            seanses.map((seance) => (
+              <SeanceBadge
+                key={seance.id}
+                choosen={seance.id === choosenSeance?.id}
+                dateString={seance.date}
+                onClick={() => handleBadgeClick(seance)}
+              />
+            ))}
+        </Flex>
+        <Flex justify="flex-end" mt={10}>
+          <Button
+            variant="light"
+            color="blue"
+            disabled={!choosenSeance}
+            onClick={handleOrderClick}
+          >
+            Choose seats
+          </Button>
+        </Flex>
       </Card>
     </Container>
   );

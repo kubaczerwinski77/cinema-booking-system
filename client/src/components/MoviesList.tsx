@@ -15,7 +15,6 @@ import {
 } from "@mantine/core";
 import { useDebouncedValue, useHover, useMediaQuery } from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
-import { gapi } from "gapi-script";
 
 interface IProps {
   movies: Movie[];
@@ -141,32 +140,9 @@ const MoviesList: FC<IProps> = ({ movies, movieIdsToPromote }) => {
       )
     : movies.filter((movie) => movieIdsToPromote.indexOf(movie.imdbID) === -1);
 
-  const fetchCinemas = () => {
-    fetch(`${import.meta.env.VITE_APP_URL}/cinemas`)
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-  };
-
-  const fetchSeanses = () => {
-    console.log({ token: gapi.auth.getToken() });
-    fetch(`${import.meta.env.VITE_APP_URL}/seanses`, {
-      headers: {
-        Authorization: `Bearer ${gapi.auth.getToken().access_token}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-  };
-
   return (
     <Flex w={"100%"} h={"100%"} direction="column" p={25} align="center">
-      <Flex gap="16px">
-        <Button onClick={fetchCinemas}>Fetch cinemas</Button>
-        <Button onClick={fetchSeanses}>Fetch seanses</Button>
-      </Flex>
-      {/* <Flex
+      <Flex
         align="center"
         justify="space-between"
         mb={isMobile ? "lg" : "xl"}
@@ -216,7 +192,7 @@ const MoviesList: FC<IProps> = ({ movies, movieIdsToPromote }) => {
         {filteredMovies.map((movie) => (
           <MovieListItem movie={movie} isMobile={isMobile} key={movie.imdbID} />
         ))}
-      </Flex> */}
+      </Flex>
     </Flex>
   );
 };
