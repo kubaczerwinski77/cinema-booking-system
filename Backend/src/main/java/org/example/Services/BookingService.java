@@ -53,15 +53,20 @@ public class BookingService implements  IBookingService {
         booking.setName(name);
         booking.setLastName(lastName);
         booking.setDate(date);
-        List<Seat> seatList = new ArrayList<>();
-        for (Long id : seatId) {
-            if (seatRepository.existsById(id))
-                seatList.add(seatRepository.findById(id).get());
-            else throw new NoSuchElementException("Seat with id " + id + " does not exist");;
-        }
         Optional<Seanse> seanse = seanseRepository.findById(seanseId);
         if (seanse.isPresent()) {
             bookingRepository.saveAndFlush(booking);
+            List<Seat> seatList = new ArrayList<>();
+            for (Long id : seatId) {
+                if (seatRepository.existsById(id)) {
+                    Optional<Seat> seat = seatRepository.findById(id);
+                    if(seanse.get().getCinemaHall().getId() == seat.get().getCinemaHall().getId()) {
+                        seatList.add(seatRepository.findById(id).get());
+                    }
+                    else throw new NoSuchElementException("Seat with " + id + " in cinema hall "+seanse.get().getCinemaHall().getId()+" does not exist");
+                }
+                else throw new NoSuchElementException("Seat with id " + id + " does not exist");
+            }
             List<ReservedSeats> reserved = new ArrayList<>();
             for (Seat seat : seatList) {
                 try {

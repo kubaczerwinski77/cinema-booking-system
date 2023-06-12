@@ -16,7 +16,6 @@ public class ReservedSeats implements Serializable {
     @JoinColumn(name = "seanse_id", insertable=false, updatable=false)
     private Seanse seanse;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "booking_id", insertable=false, updatable=false)
     private Booking booking;
