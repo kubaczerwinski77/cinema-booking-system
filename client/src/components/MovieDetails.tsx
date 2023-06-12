@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import {
   Container,
   Text,
@@ -14,6 +14,7 @@ import { movies } from "../movies";
 import { useNavigate, useParams } from "react-router-dom";
 import { ISeance } from "../interfaces/seance";
 import SeanceBadge from "./SeanceBadge";
+import { ReservationContext } from "../AppRouter";
 
 const MovieBookingPage: FC = () => {
   const { id } = useParams();
@@ -21,6 +22,7 @@ const MovieBookingPage: FC = () => {
   const movie = movies.find((movie) => movie.imdbID === id);
   const [seanses, setSeanses] = useState<ISeance[]>([]);
   const [choosenSeance, setChoosenSeance] = useState<ISeance>();
+  const { dispatch: setReservation } = useContext(ReservationContext);
 
   const handleOrderClick = () => {
     if (!choosenSeance) {
@@ -29,6 +31,13 @@ const MovieBookingPage: FC = () => {
     navigate(
       `/order?seanceId=${choosenSeance.id}&movieId=${id}&cinemaHallId=${choosenSeance.cinemaHall.id}`
     );
+    setReservation({
+      data: {
+        seanceId: choosenSeance.id,
+        movieId: id,
+        cinemaHallId: choosenSeance.cinemaHall.id,
+      },
+    });
   };
 
   const handleBadgeClick = (seance: ISeance) => {
