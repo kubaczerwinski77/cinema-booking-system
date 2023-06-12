@@ -9,6 +9,7 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
   opened: boolean;
@@ -17,6 +18,7 @@ interface IProps {
 
 const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
   const theme = useMantineTheme();
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     // @ts-ignore
@@ -28,7 +30,6 @@ const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
         text: "continue_with",
         width: "auto",
         height: 50,
-        longtitle: true,
       }
     );
   }, []);
@@ -46,7 +47,13 @@ const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
           />
         </MediaQuery>
 
-        <Group spacing={0}>
+        <Group
+          spacing={0}
+          onClick={() => navigate("/movies")}
+          sx={{
+            cursor: "pointer",
+          }}
+        >
           <Text size="36px" weight={700} color={"blue"}>
             Cinema
           </Text>

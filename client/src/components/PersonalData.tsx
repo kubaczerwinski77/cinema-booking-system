@@ -7,19 +7,48 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { ReservationContext } from "../AppRouter";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { ISeance } from "../interfaces/seance";
 
 const PersonalData = () => {
+  const { data, dispatch: setReservation } = useContext(ReservationContext);
   const [searchParams] = useSearchParams();
   const seanceId = searchParams.get("seanceId");
-  const movieId = searchParams.get("movieId");
-  const cinemaHallId = searchParams.get("cinemaHallId");
   const seatsIds = searchParams.get("seats")?.split(",");
-  const { data: reservation } = useContext(ReservationContext);
+  const navigate = useNavigate();
+  const [seance, setSeance] = useState<ISeance>();
 
-  console.log({ reservation });
+  const handleFormSubmit = async (values: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    termsOfService: boolean;
+  }) => {
+    setReservation({
+      data: {
+        ...data,
+        personalData: values,
+      },
+    });
+    // navigate(`/summary`);
+    const res = await fetch(`${import.meta.env.VITE_APP_URL}/bookings`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        seats: seatsIds,
+        seanseId: seanceId,
+        date: seance?.date,
+        name: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+      }),
+    });
+    console.log({ res });
+  };
 
   const form = useForm({
     initialValues: {
@@ -38,6 +67,17 @@ const PersonalData = () => {
     },
   });
 
+  useEffect(() => {
+    const fetchSeance = async () => {
+      const res = await fetch(
+        `${import.meta.env.VITE_APP_URL}/seanses/${seanceId}`
+      );
+      const data = await res.json();
+      setSeance(data);
+    };
+    fetchSeance();
+  }, [seanceId]);
+
   return (
     <Flex justify="center" direction="column" align="center" gap="60px">
       <Stepper active={2} breakpoint="sm" maw="50%">
@@ -54,8 +94,11 @@ const PersonalData = () => {
           description="Provide personal data"
         ></Stepper.Step>
       </Stepper>
-      <Flex direction="column" maw="40%" align="center">
-        <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <Flex maw="50%" align="center" w="300px">
+        <form
+          onSubmit={form.onSubmit(handleFormSubmit)}
+          style={{ width: "100%" }}
+        >
           <TextInput
             withAsterisk
             label="First name"

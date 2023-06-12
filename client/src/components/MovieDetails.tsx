@@ -60,6 +60,13 @@ const MovieBookingPage: FC = () => {
     fetchSeanses();
   }, [id]);
 
+  //change document title
+  useEffect(() => {
+    if (movie) {
+      document.title = `CinemaApp - ${movie.Title}`;
+    }
+  }, [movie]);
+
   if (!movie) {
     return (
       <Container size="md">

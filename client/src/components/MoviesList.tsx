@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Movie } from "../movies";
 import {
   Badge,
@@ -13,8 +13,13 @@ import {
   TextInput,
   useMantineColorScheme,
 } from "@mantine/core";
-import { useDebouncedValue, useHover, useMediaQuery } from "@mantine/hooks";
-import { useNavigate } from "react-router-dom";
+import {
+  useDebouncedValue,
+  useHover,
+  useMediaQuery,
+  useScrollIntoView,
+} from "@mantine/hooks";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface IProps {
   movies: Movie[];
@@ -133,12 +138,36 @@ const MoviesList: FC<IProps> = ({ movies, movieIdsToPromote }) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const [value, setValue] = useState("");
   const [debounced] = useDebouncedValue(value, 200);
+  const { scrollIntoView, targetRef } = useScrollIntoView({
+    offset: 100,
+  });
+  const {
+    scrollIntoView: scrollRecommendedIntoView,
+    targetRef: targetRecommendedRef,
+  } = useScrollIntoView({
+    offset: 200,
+  });
+  const location = useLocation();
+  const { hash } = location;
+
+  useEffect(() => {
+    if (hash === `#all`) {
+      scrollIntoView();
+    }
+    if (hash === `#recommended` || !hash) {
+      scrollRecommendedIntoView();
+    }
+  }, [scrollIntoView, hash, scrollRecommendedIntoView]);
 
   const filteredMovies = debounced
     ? movies.filter((movie) =>
         movie.Title.toLowerCase().includes(debounced.toLowerCase())
       )
     : movies.filter((movie) => movieIdsToPromote.indexOf(movie.imdbID) === -1);
+
+  useEffect(() => {
+    document.title = `CinemaApp`;
+  }, []);
 
   return (
     <Flex w={"100%"} h={"100%"} direction="column" p={25} align="center">
@@ -148,7 +177,13 @@ const MoviesList: FC<IProps> = ({ movies, movieIdsToPromote }) => {
         mb={isMobile ? "lg" : "xl"}
         w="90%"
       >
-        <Text weight={700} size={36}>
+        <Text
+          weight={700}
+          size={36}
+          ref={
+            targetRecommendedRef as React.MutableRefObject<HTMLHeadingElement>
+          }
+        >
           {debounced
             ? `
           Search results for "${debounced}"`
@@ -177,7 +212,13 @@ const MoviesList: FC<IProps> = ({ movies, movieIdsToPromote }) => {
               ))}
           </Flex>
 
-          <Text weight={700} size={36} mt={isMobile ? "lg" : "xl"} w="90%">
+          <Text
+            ref={targetRef as React.MutableRefObject<HTMLHeadingElement>}
+            weight={700}
+            size={36}
+            mt={isMobile ? "lg" : "xl"}
+            w="90%"
+          >
             All movies
           </Text>
         </>
