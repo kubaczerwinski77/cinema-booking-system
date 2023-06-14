@@ -2,6 +2,7 @@
 import { Dispatch, FC, SetStateAction, useLayoutEffect } from "react";
 import {
   Burger,
+  Button,
   Flex,
   Group,
   Header,
@@ -10,15 +11,20 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
+import { IGoogleUser } from "../interfaces/user";
+import jwtDecode from "jwt-decode";
 
 interface IProps {
   opened: boolean;
   setOpened: Dispatch<SetStateAction<boolean>>;
+  user: IGoogleUser;
+  setUser: Dispatch<SetStateAction<IGoogleUser>>;
 }
 
-const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
+const AppHeader: FC<IProps> = ({ opened, setOpened, user, setUser }) => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
+  const tokenData: any = user.credential && jwtDecode(user.credential);
 
   useLayoutEffect(() => {
     // @ts-ignore
@@ -32,7 +38,7 @@ const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
         height: 50,
       }
     );
-  }, []);
+  }, [tokenData]);
 
   return (
     <Header height={{ base: 50, md: 70 }} p="md">
@@ -62,7 +68,20 @@ const AppHeader: FC<IProps> = ({ opened, setOpened }) => {
           </Text>
         </Group>
 
-        <Flex id="google-login-button"></Flex>
+        {user.credential ? (
+          <Group>
+            <Text>{tokenData.email}</Text>
+            <Button
+              onClick={() => {
+                setUser({} as IGoogleUser);
+              }}
+            >
+              Logout
+            </Button>
+          </Group>
+        ) : (
+          <Flex w="300px" id="google-login-button"></Flex>
+        )}
       </Flex>
     </Header>
   );

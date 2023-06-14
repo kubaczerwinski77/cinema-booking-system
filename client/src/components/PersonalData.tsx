@@ -11,14 +11,19 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ReservationContext } from "../AppRouter";
 import { useContext, useEffect, useState } from "react";
 import { ISeance } from "../interfaces/seance";
+import { notifications } from "@mantine/notifications";
 
 const PersonalData = () => {
   const { data, dispatch: setReservation } = useContext(ReservationContext);
   const [searchParams] = useSearchParams();
   const seanceId = searchParams.get("seanceId");
-  const seatsIds = searchParams.get("seats")?.split(",");
+  const seatsIds = searchParams
+    .get("seats")
+    ?.split(",")
+    ?.map((id) => Number(id));
   const navigate = useNavigate();
   const [seance, setSeance] = useState<ISeance>();
+  const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = async (values: {
     firstName: string;
@@ -32,22 +37,39 @@ const PersonalData = () => {
         personalData: values,
       },
     });
-    // navigate(`/summary`);
-    const res = await fetch(`${import.meta.env.VITE_APP_URL}/bookings`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        seats: seatsIds,
-        seanseId: seanceId,
-        date: seance?.date,
-        name: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-      }),
-    });
-    console.log({ res });
+    try {
+      setLoading(true);
+      const res = await fetch(`${import.meta.env.VITE_APP_URL}/bookings`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          seatId: seatsIds,
+          seanseId: Number(seanceId),
+          date: seance?.date,
+          name: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+        }),
+      });
+      const data = await res.json();
+      notifications.show({
+        variant: "success",
+        title: "Reservation has been made!",
+        message: "You will be redirected to summary page",
+      });
+      navigate("/summary");
+    } catch (error) {
+      notifications.show({
+        variant: "error",
+        title: "Something went wrong",
+        message: "Please try again later",
+      });
+      navigate("/movies");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const form = useForm({
@@ -126,7 +148,9 @@ const PersonalData = () => {
           />
 
           <Group position="right" mt="md">
-            <Button type="submit">Submit</Button>
+            <Button type="submit" loading={loading}>
+              Submit
+            </Button>
           </Group>
         </form>
       </Flex>

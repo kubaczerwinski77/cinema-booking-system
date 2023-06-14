@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.example.Services.ReservedSeatsService;
 import org.webjars.NotFoundException;
 
@@ -34,7 +35,7 @@ public class ReservedSeatesController {
     }
 
     @GetMapping(value = "/reservedSeates/{id}")
-    public ResponseEntity<List<Seat>> getAllReservedSeatesInSeanse(long id) {
+    public ResponseEntity<List<Seat>> getAllReservedSeatesInSeanse(@PathVariable("id") long id) {
             return new ResponseEntity<>(reservedSeatsService.getReservedSeatInSeanse(id), HttpStatus.OK);
 
     }

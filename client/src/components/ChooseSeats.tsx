@@ -29,6 +29,9 @@ const ChooseSeats = () => {
   const { dispatch: setReservation } = useContext(ReservationContext);
 
   const handleSeatClick = (seat: ISeat) => {
+    if (reservedIds.includes(seat.id)) {
+      return;
+    }
     if (selectedSeats.includes(seat)) {
       setSelectedSeats(selectedSeats.filter((s) => s !== seat));
     } else {
@@ -69,13 +72,13 @@ const ChooseSeats = () => {
   useEffect(() => {
     const fetchReservedSeats = async () => {
       const res = await fetch(
-        `${import.meta.env.VITE_APP_URL}/reservedSeates/${cinemaHallId}`
+        `${import.meta.env.VITE_APP_URL}/reservedSeates/${seanceId}`
       );
       const data = await res.json();
       setReservedSeats(data);
     };
-    // fetchReservedSeats();
-  }, [cinemaHallId]);
+    fetchReservedSeats();
+  }, [seanceId]);
 
   return (
     <Flex justify="center" direction="column" align="center" gap="32px">
@@ -113,8 +116,7 @@ const ChooseSeats = () => {
               <Seat
                 key={seat.id}
                 seat={seat}
-                isReserved={seat.id % 13 === 0}
-                // isReserved={reservedIds.includes(seat.id)}
+                isReserved={reservedIds.includes(seat.id)}
                 isSelected={selectedSeats.includes(seat)}
                 onClick={() => handleSeatClick(seat)}
               />

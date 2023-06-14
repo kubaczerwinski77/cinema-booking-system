@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { AppShell, NavLink, Navbar, Text } from "@mantine/core";
+import { AppShell, NavLink, Navbar } from "@mantine/core";
 import AppHeader from "./components/AppHeader";
 import { type Dispatch, useEffect, useState } from "react";
 import { movieIdsToPromote, movies } from "./movies";
@@ -17,8 +17,12 @@ import {
   IconThumbUp,
   IconUserPlus,
 } from "@tabler/icons-react";
+import SeanceCreator from "./components/admin/SeanceCreator";
+import { IGoogleUser } from "./interfaces/user";
+import jwtDecode from "jwt-decode";
+import { accessAllowed } from "./components/admin/admin";
 
-export const UserContext = createContext(null);
+export const UserContext = createContext({} as IGoogleUser);
 export const ReservationContext = createContext({
   dispatch: (() => undefined) as Dispatch<any>,
   data: {
@@ -47,9 +51,11 @@ const INITIAL_RESERVATION = {
 
 const AppRouter = () => {
   const [opened, setOpened] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<IGoogleUser>({} as IGoogleUser);
   const [reservation, setReservation] = useState(INITIAL_RESERVATION);
   const navigate = useNavigate();
+  const token = user.credential && jwtDecode(user.credential);
+  const shouldSeeAdminPaths = accessAllowed(token);
 
   useEffect(() => {
     // @ts-ignore
@@ -60,8 +66,6 @@ const AppRouter = () => {
       },
     });
   }, []);
-
-  console.log({ user });
 
   return (
     <UserContext.Provider value={user}>
@@ -96,7 +100,7 @@ const AppRouter = () => {
                 onClick={() => navigate("/movies#all")}
               />
             </NavLink>
-            {user && (
+            {shouldSeeAdminPaths && (
               <NavLink
                 opened
                 label="Admin panel"
@@ -112,7 +116,14 @@ const AppRouter = () => {
             )}
           </Navbar>
         }
-        header={<AppHeader opened={opened} setOpened={setOpened} />}
+        header={
+          <AppHeader
+            opened={opened}
+            setOpened={setOpened}
+            setUser={setUser}
+            user={user}
+          />
+        }
       >
         <ReservationContext.Provider
           value={{
@@ -134,6 +145,9 @@ const AppRouter = () => {
             <Route path="/order" element={<ChooseSeats />} />
             <Route path="/personalData" element={<PersonalData />} />
             <Route path="/summary" element={<Summary />} />
+            {shouldSeeAdminPaths && (
+              <Route path="/admin/seance/create" element={<SeanceCreator />} />
+            )}
             <Route path="*" element={<Navigate to="/movies" replace />} />
           </Routes>
         </ReservationContext.Provider>
