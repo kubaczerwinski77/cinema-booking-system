@@ -58,13 +58,17 @@ const AppRouter = () => {
   const shouldSeeAdminPaths = accessAllowed(token);
 
   useEffect(() => {
-    // @ts-ignore
-    google.accounts.id.initialize({
-      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      callback: (res: any) => {
-        setUser(res);
-      },
-    });
+    try {
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        callback: (res: any) => {
+          setUser(res);
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   return (

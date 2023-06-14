@@ -27,17 +27,21 @@ const AppHeader: FC<IProps> = ({ opened, setOpened, user, setUser }) => {
   const tokenData: any = user.credential && jwtDecode(user.credential);
 
   useLayoutEffect(() => {
-    // @ts-ignore
-    google.accounts.id.renderButton(
-      document.getElementById("google-login-button"),
-      {
-        theme: "outline",
-        size: "large",
-        text: "continue_with",
-        width: "auto",
-        height: 50,
-      }
-    );
+    try {
+      // @ts-ignore
+      google.accounts.id.renderButton(
+        document.getElementById("google-login-button"),
+        {
+          theme: "outline",
+          size: "large",
+          text: "continue_with",
+          width: "auto",
+          height: 50,
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }, [tokenData]);
 
   return (
