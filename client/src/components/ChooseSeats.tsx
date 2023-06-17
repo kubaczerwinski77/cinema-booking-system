@@ -14,6 +14,7 @@ import {
 } from "@mantine/core";
 import { IconCircleDashed } from "@tabler/icons-react";
 import { ReservationContext } from "../AppRouter";
+import { appUrl } from "../utils";
 
 const ChooseSeats = () => {
   const [searchParams] = useSearchParams();
@@ -57,9 +58,7 @@ const ChooseSeats = () => {
 
   useEffect(() => {
     const fetchSeats = async () => {
-      const res = await fetch(
-        `${import.meta.env.VITE_APP_URL}/seatsInHall/${cinemaHallId}`
-      );
+      const res = await fetch(`${appUrl}/seatsInHall/${cinemaHallId}`);
       const data = await res.json();
       setSeats(data);
       setMaxSeatsInRow(
@@ -71,9 +70,7 @@ const ChooseSeats = () => {
 
   useEffect(() => {
     const fetchReservedSeats = async () => {
-      const res = await fetch(
-        `${import.meta.env.VITE_APP_URL}/reservedSeates/${seanceId}`
-      );
+      const res = await fetch(`${appUrl}/reservedSeates/${seanceId}`);
       const data = await res.json();
       setReservedSeats(data);
     };

@@ -15,6 +15,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ISeance } from "../interfaces/seance";
 import SeanceBadge from "./SeanceBadge";
 import { ReservationContext } from "../AppRouter";
+import { appUrl } from "../utils";
 
 const MovieBookingPage: FC = () => {
   const { id } = useParams();
@@ -50,9 +51,7 @@ const MovieBookingPage: FC = () => {
 
   useEffect(() => {
     const fetchSeanses = async () => {
-      const res = await fetch(
-        `${import.meta.env.VITE_APP_URL}/seanses/movie/${id}`
-      );
+      const res = await fetch(`${appUrl}/seanses/movie/${id}`);
       const data = await res.json();
       setSeanses(data);
     };

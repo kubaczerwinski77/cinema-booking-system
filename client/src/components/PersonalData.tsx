@@ -12,6 +12,7 @@ import { ReservationContext } from "../AppRouter";
 import { useContext, useEffect, useState } from "react";
 import { ISeance } from "../interfaces/seance";
 import { notifications } from "@mantine/notifications";
+import { appUrl } from "../utils";
 
 const PersonalData = () => {
   const { data, dispatch: setReservation } = useContext(ReservationContext);
@@ -39,7 +40,7 @@ const PersonalData = () => {
     });
     try {
       setLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_APP_URL}/bookings`, {
+      const res = await fetch(`${appUrl}/bookings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,9 +92,7 @@ const PersonalData = () => {
 
   useEffect(() => {
     const fetchSeance = async () => {
-      const res = await fetch(
-        `${import.meta.env.VITE_APP_URL}/seanses/${seanceId}`
-      );
+      const res = await fetch(`${appUrl}/seanses/${seanceId}`);
       const data = await res.json();
       setSeance(data);
     };

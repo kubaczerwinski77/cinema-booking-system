@@ -115,6 +115,7 @@ const AppRouter = () => {
                 <NavLink
                   label="Create seanse"
                   icon={<IconNewSection size="1rem" stroke={1.5} />}
+                  onClick={() => navigate("/admin/seance/create")}
                 />
               </NavLink>
             )}

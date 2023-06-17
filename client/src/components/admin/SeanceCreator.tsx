@@ -6,6 +6,7 @@ import { DatePicker, TimeInput } from "@mantine/dates";
 import { notifications } from "@mantine/notifications";
 import { IconClock } from "@tabler/icons-react";
 import { UserContext } from "../../AppRouter";
+import { appUrl } from "../../utils";
 
 const SeanceCreator = () => {
   const { credential } = useContext(UserContext);
@@ -41,9 +42,7 @@ const SeanceCreator = () => {
   };
 
   const fetchCinemaHalls = async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL || "http://localhost:8080"}/cinemaHalls`
-    );
+    const response = await fetch(`${appUrl}/cinemaHalls`);
     const data = await response.json();
     setCinemaHalls(data);
   };
@@ -58,9 +57,8 @@ const SeanceCreator = () => {
 
   const handleSubmitButtonClick = async () => {
     setLoading(true);
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL || "http://localhost:8080"}/seances`,
-      {
+    try {
+      const res = await fetch(`${appUrl}/seanses`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,14 +69,22 @@ const SeanceCreator = () => {
           cinemaHallId: choosenCinemaHall,
           date: choosenDate?.toISOString(),
         }),
+      });
+      if (res.status !== 200) {
+        throw new Error();
       }
-    );
-    const data = await res.json();
-    notifications.show({
-      title: "Seance created",
-      message: "Seance created successfully",
-      variant: "success",
-    });
+      notifications.show({
+        title: "Seance created",
+        message: "Seance created successfully",
+        variant: "success",
+      });
+    } catch (e) {
+      notifications.show({
+        title: "Error",
+        message: "Error while creating seance",
+        variant: "error",
+      });
+    }
 
     setChoosenCinemaHall(null);
     setChoosenDate(null);
