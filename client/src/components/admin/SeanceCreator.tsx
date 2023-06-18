@@ -67,10 +67,10 @@ const SeanceCreator = () => {
         body: JSON.stringify({
           movieId: choosenMovie,
           cinemaHallId: choosenCinemaHall,
-          date: choosenDate?.toISOString(),
+          date: choosenDate?.toISOString().slice(0, 19),
         }),
       });
-      if (res.status !== 200) {
+      if (res.status !== 201) {
         throw new Error();
       }
       notifications.show({
