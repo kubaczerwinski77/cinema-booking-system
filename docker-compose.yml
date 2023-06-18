@@ -12,17 +12,17 @@ services:
       - mysql_data:/var/lib/mysqldatabase
     restart: always
 
-  # frontend:
-  #   container_name: cinema-frontend
-  #   build:
-  #     context: ./client
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "3000:3000"
-  #   environment:
-  #     - VITE_API_URL=http://localhost:8080
-  #     - VITE_GOOGLE_CLIENT_ID=798741108575-snc0su2r1cek5egop88vqs3rq5oda3j2.apps.googleusercontent.com
-  #   restart: always
+  frontend:
+    container_name: cinema-frontend
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://localhost:8080
+      - VITE_GOOGLE_CLIENT_ID=798741108575-snc0su2r1cek5egop88vqs3rq5oda3j2.apps.googleusercontent.com
+    restart: always
 
   backend:
     container_name: cinema-backend
