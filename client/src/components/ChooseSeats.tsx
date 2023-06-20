@@ -15,6 +15,7 @@ import {
 import { IconCircleDashed } from "@tabler/icons-react";
 import { ReservationContext } from "../AppRouter";
 import { appUrl } from "../utils";
+import { useQuery } from "@tanstack/react-query";
 
 const ChooseSeats = () => {
   const [searchParams] = useSearchParams();
@@ -22,15 +23,25 @@ const ChooseSeats = () => {
   const movieId = searchParams.get("movieId");
   const cinemaHallId = searchParams.get("cinemaHallId");
   const [seats, setSeats] = useState<ISeat[]>([]);
-  const [reservedSeats, setReservedSeats] = useState<ISeat[]>([]);
+  // const [reservedSeats, setReservedSeats] = useState<ISeat[]>([]);
   const [maxSeatsInRow, setMaxSeatsInRow] = useState<number>(0);
   const [selectedSeats, setSelectedSeats] = useState<ISeat[]>([]);
-  const reservedIds = reservedSeats.map((seat) => seat.id);
   const navigate = useNavigate();
   const { dispatch: setReservation } = useContext(ReservationContext);
 
+  const fetchReservedSeats = async () => {
+    const res = await fetch(`${appUrl}/reservedSeates/${seanceId}`);
+    return res.json();
+  };
+
+  const { data: reservedSeats } = useQuery(
+    ["reservedSeats"],
+    fetchReservedSeats
+  );
+
+  const reservedIds = (reservedSeats as ISeat[])?.map((seat) => seat.id);
   const handleSeatClick = (seat: ISeat) => {
-    if (reservedIds.includes(seat.id)) {
+    if (reservedIds?.includes(seat.id)) {
       return;
     }
     if (selectedSeats.includes(seat)) {
@@ -68,14 +79,9 @@ const ChooseSeats = () => {
     fetchSeats();
   }, [cinemaHallId]);
 
-  useEffect(() => {
-    const fetchReservedSeats = async () => {
-      const res = await fetch(`${appUrl}/reservedSeates/${seanceId}`);
-      const data = await res.json();
-      setReservedSeats(data);
-    };
-    fetchReservedSeats();
-  }, [seanceId]);
+  // useEffect(() => {
+  //   fetchReservedSeats();
+  // }, [seanceId]);
 
   return (
     <Flex justify="center" direction="column" align="center" gap="32px">
@@ -93,7 +99,13 @@ const ChooseSeats = () => {
           description="Provide personal data"
         ></Stepper.Step>
       </Stepper>
-      <Flex sx={{ flexWrap: "wrap" }} mt={10} align={"flex-start"} w="100%">
+      <Flex
+        sx={{ flexWrap: "wrap" }}
+        mt={10}
+        align={"flex-start"}
+        w="100%"
+        gap={"xl"}
+      >
         <Flex direction="column" justify="center" sx={{ flex: "2 1 0" }}>
           <Flex
             h={5}
@@ -113,7 +125,7 @@ const ChooseSeats = () => {
               <Seat
                 key={seat.id}
                 seat={seat}
-                isReserved={reservedIds.includes(seat.id)}
+                isReserved={reservedIds?.includes(seat.id)}
                 isSelected={selectedSeats.includes(seat)}
                 onClick={() => handleSeatClick(seat)}
               />
